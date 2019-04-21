@@ -87,8 +87,10 @@ def union(a, b):
 |list.sort(key=None, reverse=False)|对列表中的元素进行排序|
 |list.reverse()|反转列表中的元素|
 |list.copy()|返回列表的一个浅拷贝,相当于a[:]|
+|||
 
 - 不同操作的时间复杂度:
+
 |操作|时间复杂度|
 |--|--|
 |append()|O(1)|
@@ -97,6 +99,7 @@ def union(a, b):
 |pop([i])|指定i时为O(n),不指定时为O(1)|
 |index(x)|O(n)|
 |count(x)|O(n)|
+|||
 
 - 优点：
   - 无须为表示表中元素之间的逻辑关系而增加额外的存储空间
