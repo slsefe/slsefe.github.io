@@ -2,8 +2,9 @@
 
 - **线性表（List）：零个或多个数据元素的有限序列**。
 - 元素之间存在顺序。若存在多个元素，则第一个元素无前驱，最后一个元素无后继，其他元素有且只有一个前驱和后继。
-- 记法：若将线性表记为(a1,...,a_i-1,a_i,a_i+1,...,a_n)，则称a_i-1是a_i的直接前驱元素，a_i+1是a_i的直接后继元素。当i=1,2,...,n-1时，a_i有且仅有一个直接后继，当i=2,3,...,n时，a_i有且仅有一个直接前驱。
-![image](images/3-1.png)
+- 记法：若将线性表记为(a1,a2,...,a_i-1,a_i,a_i+1,...,a_n)，则称a_i-1是a_i的直接前驱元素，a_i+1是a_i的直接后继元素。当i=1,2,...,n-1时，a_i有且仅有一个直接后继，当i=2,3,...,n时，a_i有且仅有一个直接前驱。
+
+    ![image](images/3-1.png)
 - 线性表元素的个数n(n>=0)定义为线性表的长度，当n=0时，称为空表。
 
 ## 线性表的抽象数据类型(Abstract Ddat Type)
@@ -17,25 +18,23 @@ ADT List:
    prepend(self,elem)   #在表头插入元素
    append(self,elem)    #在表尾加入元素
    insert(self,elem,i)  #在表的位置i处插入元素
-   del_first(self)      #删除第一个元素
-   def_last(self)       #删除最后一个元素
-   del(self,i)          #删除第i个元素
+   pop(self)            #删除并弹出第一个元素
+   poplast(self)        #删除并弹出最后一个元素
+   del(self,i)          #删除并弹出第i个元素
    get(self,i)          #获取第i个元素
-   search(self,elem)    #查找元素在表中第一次出现的位置
+   count(self,elem)     #统计元素出现的次数
+   index(self,elem)    #查找元素在表中第一次出现的位置
    forall(self,op)      #对表元素的遍历操作，op操作
 ```
 
 - 实现两个线性表集合A和B的并集操作
 ```
 def union(a, b):
-    ```将所有在线性表Lb中但不在La中的数据元素插入到La中```
-    l_a = len(a)
-    l_b = len(b)
-    for i in range(l_b):
+    ```将所有在线性表b中但不在a中的数据元素插入到a中```
+    for i in range(len(b)):
         x = b.get(i)
         if a.count(x) == 0:
-            a.insert(x, l_a)
-            l_a += 1
+            a.append(x)
     return a
 ```
 
@@ -44,7 +43,7 @@ def union(a, b):
 - 定义：**用一段地址连续的存储单元依次存储线性表的数据元素。**
 - 顺序存储方式
     - **使用一维数组来实现顺序存储结构**
-    - 顺序存储的结构代码：
+    - 使用C语言进行顺序存储的结构代码：
     ```
     #define MAXSIZE 20           /*存储空间初始分配量*/
     typedef int ElemType;        /*ElemType类型根据实际情况而定，这里假设为int*/
@@ -87,19 +86,22 @@ def union(a, b):
 |list.sort(key=None, reverse=False)|对列表中的元素进行排序|
 |list.reverse()|反转列表中的元素|
 |list.copy()|返回列表的一个浅拷贝,相当于a[:]|
-|||
+
 
 - 不同操作的时间复杂度:
 
 |操作|时间复杂度|
 |--|--|
-|append()|O(1)|
+|append(x)|O(1)|
+|prepend(x)|O(1)|
 |insert(i,x)|O(n)|
-|remove(x)|O(n)|
-|pop([i])|指定i时为O(n),不指定时为O(1)|
-|index(x)|O(n)|
+|pop()|O(1)|
+|poplast()|O(1)|
+|remove(i)|O(n)|
+|get(i)|O(1)|
 |count(x)|O(n)|
-|||
+|index(x)|O(n)|
+
 
 - 优点：
   - 无须为表示表中元素之间的逻辑关系而增加额外的存储空间
@@ -121,9 +123,11 @@ def union(a, b):
   - 头结点是为了操作的统一和方便而设立的、放在第一元素的结点之前。头结点的指针域存储指向第一个结点的指针。有了头结点，对在第一元素之前插入结点和删除第一结点，其操作与其他结点的操作就统一了。
 - 单链表结构：
   - 不带头结点的单链表：
-![不带头结点的单链表](images/3-3.png)
+    
+    ![不带头结点的单链表](images/3-3.png)
   - 带有头结点的单链表：
-![带有头结点的单链表](images/3-4.png)
+    
+    ![带有头结点的单链表](images/3-4.png)
 
 - 单链表的实现:见`03LinkedList.py`中的`LinkedList`类.
 
@@ -160,40 +164,56 @@ def union(a, b):
 ## 循环链表（circular linked list）
 - 定义：将单链表中终端结点的指针由空指针改为指向头结点，使整个单链表形成一个环，这种头尾相接的单链表称为单循环链表，简称循环链表（circular linked list）。
 - 循环链表使得可以从任意一个结点出发，访问到链表的全部结点。
-- 带头指针的非空循环链表结构:
-![带头指针的非空循环链表](images/3-6.png)
+- 带头结点的头指针非空循环链表结构:
+![带头结点的头指针非空循环链表](images/3-6.png)
 - 循环链表和单链表的差异：
     - 两者对于循环的判断条件不同。单链表若`p->next`为空，则循环结束；循环链表若`p->next`不等于头结点，则循环未结束。
 - 循环链表的改造:
     - 改造循环链表，不用头指针，而是用指向终端结点的尾指针`rear`来表示循环链表，此时用`rear->next->next`查找开始结点,用`rear`查找终端结点，时间复杂度都为`O(1)`。
-    - 改造得到的带尾指针的非空循环链表结构:
-    ![带尾指针的非空循环链表](images/3-7.png)
+    - 改造得到的带头结点的尾指针非空循环链表结构:
+    ![带头结点的尾指针非空循环链表结构](images/3-7.png)
     - 实现:见`03LinkedList.py`中的`CirLinkedList`类.
 - 合并两个循环链表
     - 对循环链表加入尾指针后,很方便对多个循环链表进行合并,合并两个循环链表的操作示意图如下:
-    ![合并两个带尾指针的非空循环链表](images/3-8.png)
-    - 假设两个循环链表的尾指针为rearA和rearB,则合并操作如下,实现见`03LinkedList.py`中的`CirLinkedList`类中的`concated`方法.
+    ![合并两个带头结点的带尾指针的非空循环链表](images/3-8.png)
+    - 假设两个循环链表的尾指针为rearA和rearB,则合并操作如下:
+        1. p = rearA -> next;
+        2. rearA -> next = rearB -> next -> next;
+        3. rearB -> next = p.
+    - Python实现:
     ```
-    p = rearA->next;
-    rearA-next = rearB->next->next;
-    rearB->next = p;
-    free (p);
+    def concated(a, b):
+        p = a._rear.next
+        a._rear.next = b._rear.next.next
+        b._rear.next = p
     ```
+
 ## 双向链表（double linked list）
 
 - 定义：在单链表的每个结点中，再设置一个指向其前驱结点的指针域prior。
 - 结构：
     - 带头结点的双向循环空链表:
-    ![带头结点的双向循环空链表](images/3-9.png)
+        
+        ![带头结点的双向循环空链表](images/3-9.png)
     - 非空的循环的带头结点的双向链表
-    ![带头结点的双向循环非空链表](images/3-10.png)
+        ![带头结点的双向循环非空链表](images/3-10.png)
 - 与单链表的比较
     - 求链表长度,查找元素,获取元素位置等方法与单链表相同
     - 插入和删除操作需要更改两个指针变量
 - 插入操作示意图:
-![双向链表插入操作](images/3-11.png)
+    
+    ![双向链表插入操作](images/3-11.png)
+    
+    1. s -> prior = p
+    2. s -> next = p -> next
+    3. p -> next -> prior = s
+    4. p -> next = s
 - 删除操作示意图:
-![双向链表删除操作](images/3-12.png)
+
+    ![双向链表删除操作](images/3-12.png)
+
+    1. p -> prior -> next = p -> next
+    2. p -> next -> prior = p -> prior
 - 实现:见`03LinkedList.py`中的`DoubleLinkedList`类.
 
 ## 总结
