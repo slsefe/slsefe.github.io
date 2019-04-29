@@ -6,14 +6,14 @@
 提示：
     分别使用迭代和递归实现
 '''
-import pysnooper
+# import pysnooper
 class ListNode(object):
     def __init__(self, x, next = None):
         self.val = x
         self.next = next
 
 class Solution(object):
-    @pysnooper.snoop()
+    # @pysnooper.snoop()
     def reverseList(self, head):
         """
         :type head: ListNode
