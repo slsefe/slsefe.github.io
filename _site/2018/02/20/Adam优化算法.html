@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adam优化算法 - Welcome to AI World</title>
+    <meta name="author"  content="Joe">
+    <meta name="description" content="Adam优化算法">
+    <meta name="keywords"  content="神经网络, trick">
+    <!-- Open Graph -->
+    <meta property="og:title" content="Adam优化算法 - Welcome to AI World">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="http://localhost:4000/2018/02/20/Adam%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95.html">
+    <meta property="og:description" content="个人AI技术博客">
+    <meta property="og:site_name" content="Welcome to AI World">
+    <link rel="stylesheet" href="//cdn.staticfile.org/normalize/6.0.0/normalize.min.css">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_roc50gemkxpw4s4i.css">
+    <link rel="stylesheet" href="/assets/css/github-markdown.css">
+    <link rel="stylesheet" href="/assets/css/prism.css">
+    <link rel="stylesheet" href="/assets/css/share.min.css">
+    <link rel="stylesheet" href="/assets/css/app.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+</head>
+
+
+<body>
+  <!--[if lt IE 10]>
+<div class="alert-danger" role="alert">你的浏览器实在太太太旧了，放学别走，升级完浏览器再说！<a target="_blank" class="alert-link" href="http://browsehappy.com">立即升级</a></div>
+<![endif]-->
+  <input id="nm-switch" type="hidden" value="true"> <header class="g-header">
+    <div class="g-logo">
+      <a href="/"></a>
+    </div>
+    <i id="menu-toggle" class="iconfont icon-menu"></i>
+    <nav class="g-nav">
+        <ul>
+            
+            <li><a href="/">home</a></li>
+            
+            <li><a href="/tags.html">tags</a></li>
+            
+        </ul>
+    </nav>
+</header>
+
+
+  <header class="g-banner post-header post-pattern-circuitBoard bgcolor-default " data-theme="default">
+    <div class="post-wrapper">
+      <div class="post-tags">
+        
+          
+            <a href="http://localhost:4000/tags#%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C" class="post-tag">神经网络</a>
+          
+            <a href="http://localhost:4000/tags#trick" class="post-tag">trick</a>
+          
+        
+      </div>
+      <h1>Adam优化算法</h1>
+      <div class="post-meta">
+        <span class="post-meta-item"><i class="iconfont icon-author"></i><a href="http://localhost:4000" target="_blank" rel="author">Joe</a></></span>
+        <time class="post-meta-item" datetime="18-02-20"><i class="iconfont icon-date"></i>20 Feb 2018</time>
+      </div>
+    </div>
+    
+    <div class="filter"></div>
+    <div class="post-cover" style="background: url('https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/2018-02-20-Adam%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/cover.jpg') center no-repeat; background-size: cover;">
+      
+  </header>
+
+  <div class="post-content visible">
+    
+    <h2 class="post-subtitle">Adam算法讲解</h2>
+    
+
+    <article class="markdown-body">
+      <h2 id="前言">前言</h2>
+<p>Adam 优化算法是随机梯度下降算法的优化，近来其广泛用于深度学习应用中，尤其是计算机视觉和自然语言处理等任务，该算法是Momentum算法与RMSprop算法的结合。<a href="https://terrifyzhao.github.io/2018/02/16/%E5%8A%A8%E9%87%8F%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95Momentum.html">动量梯度下降法Momentum</a>我们之前已经讲解过，本文将会先介绍下RMSprop算法，再讲解Adam。</p>
+
+<h2 id="rmsprop均方根">RMSprop(均方根)</h2>
+<p><img src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/2018-02-20-Adam%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/adam1.jpg" width="630" height="140" /></p>
+
+<p>在图中这样的情况时，梯度下降在横轴方向前进，在纵轴方向却会有大幅度的抖动。我们把横轴代表参数$w1$，把纵轴代表参数$w2$。注意，作为例子我们此处只引入了2个参数，实际情况会复杂很多。这里我们依然会使用指数加权平均数，如果你不了解指数加权平均数，请先阅览<a href="https://terrifyzhao.github.io/2018/02/16/%E5%8A%A8%E9%87%8F%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95Momentum.html">动量梯度下降法Momentum</a>。
+<script type="math/tex">S_{dw1} = \beta S_{dw1} + (1-\beta)(dW_1)^2</script>
+<script type="math/tex">S_{dw2} = \beta S_{dw2} + (1-\beta)(dW_2)^2</script></p>
+
+<p>这里我们最后乘的是$(dW)^2$而不是$dW$，我的理解是$dW$的值可能会出现负数，而我们更新参数时，必须保证$S_{dw1}$为正数。</p>
+
+<p>计算出指数加权平均数之后，我们开始更新参数</p>
+
+<p><script type="math/tex">W_1 = W_1 - \alpha \frac{dW_1}{ \sqrt[]{S_{dw1}+\epsilon}}</script>
+<script type="math/tex">W_2 = W_2 - \alpha \frac{dW_2}{ \sqrt[]{S_{dw2}+\epsilon}}</script></p>
+
+<p>此处的$\epsilon$是为了防止分母为0</p>
+
+<p>横轴$w1$因为抖动小，所以$dW_1$的值很小，$S_{dw1}$的值很小，最终与$\alpha$相乘的值就会很大，$W1$抖动变动大，在横轴就会前进的更快。</p>
+
+<p>纵轴$w2$因为抖动大，所以$dW_2$的值很大，$S_{dw1}$的值很大，最终与$\alpha$相乘的值就会很小，$w2$抖动变小，纵向的变化相对平缓。</p>
+
+<p>##Adam算法
+当把Momentum与RMSprop算法结合在一起时，就是Adam算法。</p>
+
+<p>首先还是计算指数加权平均数，我们令$V_{dW}=0$、$V_{db}=0$、$S_{dW}=0$、$S_{db}=0$</p>
+
+<p>接下来计算Momentum的指数加权平均数，注意超参数这里是$\beta_1$</p>
+
+<script type="math/tex; mode=display">V_{dW} = \beta_1 V_{dW} + (1-\beta_1)dW</script>
+
+<script type="math/tex; mode=display">V_{db} = \beta_1 V_{db} + (1-\beta_1)db</script>
+
+<p>再计算RMSprop的指数加权平均数，注意超参数这里是$\beta_2$</p>
+
+<script type="math/tex; mode=display">S_{dw} = \beta_2 S_{dw} + (1-\beta_2)(dW)^2</script>
+
+<script type="math/tex; mode=display">S_{db} = \beta_2 S_{db} + (1-\beta_2)(db)^2</script>
+
+<p>接下来进行参数修正，参数修正可以防止在迭代次数较少的时候，计算出来的指数加权平均数较小</p>
+
+<script type="math/tex; mode=display">V_{dw}^{correct} = \frac{V_{dw}}{1- \beta_1^t}</script>
+
+<script type="math/tex; mode=display">V_{db}^{correct} = \frac{V_{db}}{1- \beta_1^t}</script>
+
+<script type="math/tex; mode=display">S_{dw}^{correct} = \frac{S_{dw}}{1- \beta_2^t}</script>
+
+<script type="math/tex; mode=display">S_{dw}^{correct} = \frac{S_{dw}}{1- \beta_2^t}</script>
+
+<p>最后更新参数</p>
+
+<script type="math/tex; mode=display">W = W - \alpha \frac{V_{dw}^{correct}}{\sqrt[]{S_{dw}^{correct}+\epsilon}}</script>
+
+<script type="math/tex; mode=display">b = b - \alpha \frac{V_{db}^{correct}}{\sqrt[]{S_{db}^{correct}+\epsilon}}</script>
+
+<ul>
+  <li>$\beta_1$常用的缺省值是0.9</li>
+  <li>$\beta_2$ Adam的发明者推荐使用的数值是0.999</li>
+  <li>$\epsilon$的取值没有那么重要,Adam论文的作者建议为$\epsilon=10^{−8}$</li>
+  <li>在实际使用中,$\beta_1,\beta_2,\epsilon$都是使用的推荐的缺省值,需要调整的是学习率$\alpha$</li>
+</ul>
+
+<p><img src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/2018-02-20-Adam%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/adam2.jpg" width="330" height="300" /></p>
+
+<p>这是Adam 优化算法和其他优化算法在多层感知机模型中的对比，可见其收敛的速度较快，效果明显，并且Adam 算法很容易实现，有很高的计算效率和较低的内存需求。</p>
+
+
+    </article>
+
+    
+      <!--
+Author: Ray-Eldath
+refer to:
+ - https://github.com/theme-next/hexo-theme-next/blob/4bfbd67b3edc6f11b00357da6e509e5281a896f1/layout/_macro/reward.swig and
+ - https://github.com/theme-next/hexo-theme-next/blob/e12bb0b27e16072eb82baa4c7dda1c41c8de7264/source/css/_common/components/post/post-reward.styl
+-->
+<style media="screen">
+  .reward {
+    padding: 5px 0;
+    margin: 20px auto;
+    width: 90%;
+    text-align: center;
+  }
+
+  .rewardButton {
+    background-color: #f44236;
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: '微软雅黑';
+    font-size: 18px;
+    padding: 5px 25px;
+    text-decoration: none;
+  }
+
+  .rewardButton:hover {
+    background-color: #F7877F;
+  }
+
+  .wechat:hover p {
+    animation: roll 0.1s infinite linear;
+    -webkit-animation: roll 0.1s infinite linear;
+    -moz-animation: roll 0.1s infinite linear;
+  }
+
+  .alipay:hover p {
+    animation: roll 0.1s infinite linear;
+    -webkit-animation: roll 0.1s infinite linear;
+    -moz-animation: roll 0.1s infinite linear;
+  }
+
+  .QR {
+    padding-top: 20px;
+  }
+
+  .QR a {
+    border: 0;
+  }
+
+  .QR img {
+    width: 180px;
+    max-width: 100%;
+    display: inline-block;
+    margin: 0.8em 2em 0 2em;
+  }
+</style>
+
+<div class="reward">
+  <a class="rewardButton" title="请Joe喝杯咖啡？">赞 赏</a>
+
+  <div class="QR" style="display: none;">
+    
+    <div>
+      <span style="font-family: '微软雅黑'; font-size: 18px; ">真诚赞赏 手留余香</span>
+    </div>
+    
+
+    
+    <div class="wechat" style="display: inline-block">
+      <img class="wechat_qr" src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/wechat.jpeg" title="用微信请Joe喝杯咖啡？" alt="用微信请Joe喝杯咖啡？" />
+      <p>微信支付</p>
+    </div>
+    
+
+    
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $("a.rewardButton").click(function() {
+      $("div.QR").slideToggle()
+    });
+  });
+</script>
+
+    
+
+    
+    <div class="social-share-wrapper">
+      <div class="social-share"></div>
+    </div>
+    
+  </div>
+
+  <section class="author-detail">
+    <section class="post-footer-item author-card">
+      <div class="avatar">
+        <img src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/hero.jpg" alt="">
+      </div>
+      <div class="author-name" rel="author">Joe</div>
+      <div class="bio">
+        <p>移动客户端开发者，热爱AI技术</p>
+      </div>
+      
+      <ul class="sns-links">
+        
+        <li>
+          <a href="mailto:zjiuzhou@gmail.com" target="_blank">
+                    <i class="iconfont icon-email"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//weibo.com/u/2265751480?refer_flag=1001030101_" target="_blank">
+                    <i class="iconfont icon-weibo"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//www.linkedin.com/in/%E4%B9%9D%E5%B7%9E-%E8%B5%B5-742276152/" target="_blank">
+                    <i class="iconfont icon-linkedin"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//www.instagram.com/joe.zhao520/" target="_blank">
+                    <i class="iconfont icon-instagram"></i>
+                </a>
+        </li>
+        
+        <li>
+          <a href="//github.com/terrifyzhao" target="_blank">
+                    <i class="iconfont icon-github"></i>
+                </a>
+        </li>
+        
+      </ul>
+      
+    </section>
+    <section class="post-footer-item read-next">
+      
+      <div class="read-next-item">
+        <a href="/2018/02/24/NLP%E6%A8%A1%E5%9E%8B.html" class="read-next-link"></a>
+        <section>
+          <span>NLP模型</span>
+          <p>前言DP算法在图像识别领域取得了惊人的效果，近些年，也不断有人挖掘除了语言这种高层次抽象中的本质，从而让DP在NL...</p>
+        </section>
+        
+        <div class="filter"></div>
+        <img src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/2018-02-24-NLP%E6%A8%A1%E5%9E%8B/cover.jpeg" alt="">
+        
+     </div>
+      
+
+      
+      <div class="read-next-item">
+        <a href="/2018/02/16/%E5%8A%A8%E9%87%8F%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95Momentum.html" class="read-next-link"></a>
+          <section>
+            <span>动量梯度下降法Momentum</span>
+            <p>前言动量梯度下降法是对梯度下降法的一种优化算法，该方法学习率可以选择更大的值，函数的收敛速度也更快。梯度下降法就像...</p>
+          </section>
+          
+          <div class="filter"></div>
+          <img src="https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/2018-02-14-%E5%8A%A8%E9%87%8F%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E6%B3%95Momentum/cover.jpeg" alt="">
+          
+      </div>
+      
+    </section>
+
+    
+
+    
+    <section class="post-footer-item comment">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zNDAzNi8xMDU3NA">
+    </section>
+    
+  </section>
+
+  
+  <!--
+Author: Ray-Eldath
+refer to:
+ - https://github.com/theme-next/hexo-theme-next/blob/master/source/js/src/utils.js
+ - https://jingyan.baidu.com/article/b2c186c83ec846c46ef6ff80.html
+ - http://www.bkjia.com/jQuery/449205.html
+-->
+<style media="screen">
+  .scroll {
+    z-index: 10000;
+    display: none;
+    width: 56px;
+    height: 24px;
+    background: #222;
+    color: #fff;
+    line-height: 24px;
+    text-align: center;
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+</style>
+<div class="scroll">
+  <i class="fa fa-arrow-up"></i>
+  <span class="scrollpercent"></span><span> %</span>
+</div>
+
+<script src="/assets/js/util.js"></script>
+<script type="text/javascript">
+  $(document).ready(function() {
+    if (utils.isMobile()) {
+      $('.scroll').hide();
+      return;
+    }
+    $(window).scroll(function() {
+      let scrollValue = $(window).scrollTop();
+
+      var scrollPercentRounded = Math.round((scrollValue / utils.getContentVisibilityHeight()) * 100);
+      var scrollPercentMaxed = (scrollPercentRounded > 100) ? 100 : scrollPercentRounded;
+
+      $('.scrollpercent').html(scrollPercentMaxed);
+      scrollValue > 100 ? $('.scroll').fadeIn() : $('.scroll').fadeOut();
+    });
+
+    $('.scroll').click(function() {
+      $('html, body').animate({
+        scrollTop: 0
+      }, 300);
+    })
+  })
+</script>
+
+
+
+<footer class="g-footer">
+  <section>Welcome to AI World ©
+  
+  
+    2017
+    -
+  
+  2018
+  </section>
+  <section>Powered by <a href="//jekyllrb.com">Jekyll</a> | <a href="https://github.com/kaeyleo/jekyll-theme-H2O">Theme H2O</a></section>
+</footer>
+
+
+  <script src="/assets/js/social-share.min.js"></script>
+  <script>
+    socialShare('.social-share', {
+      sites: [
+        
+          'wechat'
+          ,
+          
+        
+          'weibo'
+          ,
+          
+        
+          'douban'
+          ,
+          
+        
+          'twitter'
+          
+        
+      ],
+      wechatQrcodeTitle: "分享到微信朋友圈",
+      wechatQrcodeHelper: '<p>扫码后点击右上角</p><p>将本文分享至朋友圈</p>'
+    });
+  </script>
+
+
+
+
+<script>
+    (function(d, s) {
+      var j, e = d.getElementsByTagName(s)[0];
+
+      if (typeof LivereTower === 'function') {
+        return;
+      }
+
+      j = d.createElement(s);
+      j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+      j.async = true;
+
+      e.parentNode.insertBefore(j, e);
+    })(document, 'script');
+
+  </script>
+
+
+  <noscript>为正常使用评论功能请激活JavaScript。</noscript>
+  <script src="/assets/js/prism.js"></script>
+  <script src="/assets/js/index.min.js"></script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+      }
+    });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+  
+</body>
+
+</html>

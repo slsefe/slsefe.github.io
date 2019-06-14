@@ -1,1 +1,91 @@
-theme: jekyll-theme-cayman
+# Site settings 配置站点
+title: 'Welcome to AI World'
+description: '个人AI技术博客'
+keyword: 'AI 机器学习 神经网络'
+url: '' # your host
+
+# if you don't need baseurl, you should leave this value blank.
+baseurl: ''
+
+# Navigation links
+nav:
+  home: '/'
+  tags: '/tags.html'
+
+# Footer
+footer:
+  since: 2017
+
+# Author 配置博主信息
+author: 'Joe'
+nickname: ''
+bio: 'LOVE AI'
+avatar: 'https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/profile.jpeg'
+
+# Search
+search: true
+
+# Night mode
+nightMode: true
+
+# Comments
+disqus: false
+disqus_url: 'https://liaokeyu.disqus.com/embed.js'
+
+livere: true
+livere_uid: MTAyMC8zNDAzNi8xMDU3NA
+
+# Reward 赞赏功能 by Ray-Eldath
+reward:
+  enable: true
+  reward_comment: '真诚赞赏 手留余香'
+  wechatpay: 'https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/wechat.jpeg'
+  # alipay: 'https://raw.githubusercontent.com/terrifyzhao/terrifyzhao.github.io/master/assets/img/alipay.jpeg'
+
+# b2t 回到顶部 by Ray-Eldath
+b2t: true
+
+# Share
+social-share: true
+social-share-items: ['wechat', 'weibo', 'douban', 'twitter']
+
+# theme color 主题皮肤
+theme-color: 'default'  # pink or default
+
+cover: '/assets/img/hero.jpg'
+
+# Post header background patterns (when the post no cover): circuitBoard, overlappingCircles, food, glamorous, ticTacToe, seaOfClouds
+postPatterns: 'circuitBoard'
+
+# SNS settings 配置社交网站url: email, weibo, zhihu, twitter, instagram, juejin, github, douban, facebook, dribble, uicn, jianshu, medium, linkedin
+sns:
+  email: 'mailto:zjiuzhou@gmail.com'
+  weibo: '//weibo.com/u/2265751480?refer_flag=1001030101_'
+  linkedin: '//www.linkedin.com/in/%E4%B9%9D%E5%B7%9E-%E8%B5%B5-742276152/'
+  instagram: '//www.instagram.com/joe.zhao520/'
+  github: '//github.com/terrifyzhao'
+
+# Tags 设置标签
+recommend-tags: true # whether or not display recommend-tags on the sidebar
+recommend-condition-size: 12 # a tag will be recommended if the size of it is more than this value
+
+# Build settings
+paginate: 10
+paginate_path: 'page:num'
+exclude: ['node_modules', 'dev', 'package.json', 'gulpfile.js', '.gitignore', 'README.md']
+
+# Markdown
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+
+# RSS
+RSS: false
+
+# Permalink
+# See: https://github.com/kaeyleo/jekyll-theme-H2O/issues/35
+permalink: /:year/:month/:day/:title.html
+
+# Plugins
+plugins: [jekyll-paginate]
