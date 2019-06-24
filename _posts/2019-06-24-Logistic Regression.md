@@ -76,7 +76,7 @@ $$\theta_j\leftarrow\theta_j-\alpha\frac{\partial{J(\theta)}}{\partial{\theta_j}
     - `sigmoid`应用于二分类，输出正样本的概率
     - `softmax`应用于多分类，输出每个类别的得分`score`。对`score`做指数变换，再做归一化，交叉熵损失如下：
 
-    $$L_i=-log(\frac{e^{f_{y_j}}}{\sum_je^{f_j}})$$
+    $$L_i=-log(\frac{e^{f_{y_j}}}{\sum_je^{f_{y_j}}})$$
 
     这里只关注最大的`score`，即最大的`score`越大损失越低。注意因为有多个`score`，这里的`Loss`一定大于0，可以一直优化。
 
@@ -135,7 +135,7 @@ $$\theta_j\leftarrow\theta_j-\alpha\frac{\partial{J(\theta)}}{\partial{\theta_j}
 3. `L1`正则化和`L2`正则化
 
     - `L1`正则化
-        - 形式：$\lambda\sum_{i=1}^{N}\begin{Vmatrix}w_i\end{Vmatrix}$
+        - 形式：$\lambda\sum_{i=1}^{N}\begin{Vmatrix}w_i\end{Vmatrix}_1$
         - 截断效应
         - 认为参数服从`Laplace`先验分布
     - `L2`正则化
@@ -149,12 +149,14 @@ $$\theta_j\leftarrow\theta_j-\alpha\frac{\partial{J(\theta)}}{\partial{\theta_j}
         - 都是线性模型
     - 不同点
         - `LR`是`logloss`，`LinearSVM`是`hinge loss`
-            - logloss: $J(\theta)=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]$
-            - hinge loss: $L(w,b,\alpha)=\frac{1}{2}{\begin{Vmatrix}w\end{Vmatrix}}^2-\sum_{i=1}^N\alpha_i[y_i(wx_i)+b-1]$
+            - logloss: 
+            $J(\theta)=-\frac{1}{m}\sum_{i=1}^m[y^{(i)}log(h_\theta(x^{(i)}))+(1-y^{(i)})log(1-h_\theta(x^{(i)}))]$
+            - hinge loss: 
+            $L(w,b,\alpha)=\frac{1}{2}{\begin{Vmatrix}w\end{Vmatrix}}^2-\sum_{i=1}^N\alpha_i[y_i(wx_i)+b-1]$
         - `LR`关注所有样本，`LinearSVM`只关注支持向量
         - `LR`输出概率，`SVM`输出类别，可以使用点到决策边界的距离衡量概率
 
 5. `LR`与最大似然的关系
 
-（to do）
+    `LR`假设函数中的$\theta$由最大似然估计得到。
 
