@@ -13,7 +13,7 @@
     - [sklearn特征选择](https://slsefe.github.io/2018/10/27/%E4%BD%BF%E7%94%A8sklearn%E8%BF%9B%E8%A1%8C%E7%89%B9%E5%BE%81%E9%80%89%E6%8B%A9.html)
     - [logistic regression](https://slsefe.github.io/2019/06/23/Logistic-Regression.html)
     - [support vector machine](https://slsefe.github.io/2019/06/24/Support-Vector-Machine.html)
-    - [decision tree](https://slsefe.github.io/2019/06/24/Decision-Tree.html)
+    - [decision tree](https://slsefe.github.io/2019/06/25/Decision-Tree.html)
 - 自然语言处理
     - [NLP基本知识](https://slsefe.github.io/2018/12/05/%E8%87%AA%E7%84%B6%E8%AF%AD%E8%A8%80%E5%A4%84%E7%90%86%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86.html)
     - [“Text classification algorithms: A survey”阅读笔记](https://slsefe.github.io/2019/06/19/paper-Text-Classification-Algorithms-A-survey.html)
