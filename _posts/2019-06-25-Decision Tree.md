@@ -1,6 +1,6 @@
 决策树是一种基本的分类与回归方法。决策树模型呈树形结构，表示基于特征对实例进行分类的过程，可以认为是`if-then`规则的集合。其主要优点有模型可解释性好，分类速度快，对输入数据要求低。学习时，利用训练数据，根据损失函数最小化的原则建立决策树模型。预测时，对新的数据，利用决策树模型进行分类。决策树通常包含三个步骤：特征选择，决策树的生成和决策树的修剪。
 
-本文介绍ID3，C4.5和CART算法，关于随机森林、GBDT、Xgboost和LightGBM将在后面介绍。
+本文介绍`ID3`，`C4.5`和`CART`算法，关于随机森林、`GBDT`、`Xgboost`和`LightGBM`将在后面介绍。
 
 ## 决策树基本算法
 
@@ -18,13 +18,13 @@
     - if A为空或者D中样本在A上取值相同 then
         - 将node标记为叶结点，其类别标记为D中样本数最多的类；return
     - end if
-    - 从A中选择最优划分属性$a_*$
-    - for $a_*$的每一个取值 $a_*^v$ do
-        - 为node生成一个分支；令$D_v$表示D中在$a_*$上取值为$a_*^v$的样本子集；
+    - 从A中选择最优划分属性$a_* $
+    - for $a_* $的每一个取值 $a_* ^v$ do
+        - 为node生成一个分支；令$D_v$表示D中在$a_* $上取值为$a_* ^v$的样本子集；
         - if $D_v$为空 then
             - 将分支节点标记为叶结点，其类别标记为D中样本最多的类；return
         - else
-            - 以$TreeGenerate(D_v,A\{a_*})$为分支节点
+            - 以$TreeGenerate(D_v,A\\{a_*})$为分支节点
         - end if
     - end for
 
@@ -67,7 +67,7 @@ $$Gini(D)=\sum_{k=1}^K\sum_{k'\neq k}p_kp_{k'}=1-\sum_{k=1}^Kp_k^2$$
 
 $$Gini\_index(D,a)=\sum_{v=1}^V\cfrac{\begin{vmatrix}D^v\end{vmatrix}}{\begin{vmatrix}D\end{vmatrix}}Gini(D^v)=\cfrac{\begin{vmatrix}D_1\end{vmatrix}}{\begin{vmatrix}D\end{vmatrix}}Gini(D_1)+\cfrac{\begin{vmatrix}D_2\end{vmatrix}}{\begin{vmatrix}D\end{vmatrix}}Gini(D_2)$$
 
-CART是二叉树，对于类别型离散特征，根据特征a是否取某一可能值$a^v$将D划分为$D_1$和$D_2$两部分（注意对于多个取值的类别特征，每次划分时只考虑一个可能的取值，有点类似于`one vs rest`）。对于数值型连续特征，将样本取值从小到大排列，依次将所有相邻取值的均值作为候选划分点，根据指标选择一个最佳划分点进行划分，注意数值型连续特征后续还可以进行划分。CART算法选择划分后基尼指数最小的属性，$a_*=\arg\max_{a \in A}Gini\_index(D,a)$
+CART是二叉树，对于类别型离散特征，根据特征a是否取某一可能值$a^v$将D划分为$D_1$和$D_2$两部分（注意对于多个取值的类别特征，每次划分时只考虑一个可能的取值，有点类似于`one vs rest`）。对于数值型连续特征，将样本取值从小到大排列，依次将所有相邻取值的均值作为候选划分点，根据指标选择一个最佳划分点进行划分，注意数值型连续特征后续还可以进行划分。CART算法选择划分后基尼指数最小的属性，$a_*=\arg\max_{a \in A}Gini_index(D,a)$
 
 ### 面试问题
 
@@ -179,7 +179,7 @@ $$f(x)=\sum_{m=1}^M\hat c{_m}I(x\in R_m)$$
     - 只能线性分割数据
     - 贪婪算法，选择局部最优划分属性，可能找不到最好的树
 
-12.`LR`、SVM和DT的差异
+12.LR、SVM和DT的差异
 
 ||LR，LinearSVM|DT|
 |---|---|---|
