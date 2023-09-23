@@ -16,26 +16,27 @@
   <meta name="author" content="Yin Bai">
   <meta name="keywords" content="">
   
-    <meta name="description" content="docker 安装 mysql可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password \-d">
+    <meta name="description" content="使用 Docker 安装 MySQL8可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用docker安装MySQL8">
+<meta property="og:title" content="使用 Docker 安装 MySQL8">
 <meta property="og:url" content="http://example.com/2023/09/23/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85MySQL8/index.html">
 <meta property="og:site_name" content="程序员白总的博客">
-<meta property="og:description" content="docker 安装 mysql可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password \-d">
+<meta property="og:description" content="使用 Docker 安装 MySQL8可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/assets/image-20230819230848131.png">
-<meta property="og:image" content="http://example.com/assets/image-20230819212453893.png">
-<meta property="og:image" content="http://example.com/assets/image-20230819230806609.png">
+<meta property="og:image" content="http://example.com/images/image-20230819230848131.png">
+<meta property="og:image" content="http://example.com/images/image-20230819212453893.png">
+<meta property="og:image" content="http://example.com/images/image-20230819230806609.png">
 <meta property="article:published_time" content="2023-09-23T06:04:08.000Z">
-<meta property="article:modified_time" content="2023-09-23T06:05:29.558Z">
+<meta property="article:modified_time" content="2023-09-23T06:55:42.841Z">
 <meta property="article:author" content="Yin Bai">
-<meta property="article:tag" content="docker, mysql">
+<meta property="article:tag" content="Docker">
+<meta property="article:tag" content="MySQL">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://example.com/assets/image-20230819230848131.png">
+<meta name="twitter:image" content="http://example.com/images/image-20230819230848131.png">
   
   
   
-  <title>使用docker安装MySQL8 - 程序员白总的博客</title>
+  <title>使用 Docker 安装 MySQL8 - 程序员白总的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -201,7 +202,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="使用docker安装MySQL8"></span>
+            <span id="subtitle" data-typed-text="使用 Docker 安装 MySQL8"></span>
           
         </div>
 
@@ -272,14 +273,15 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">使用docker安装MySQL8</h1>
+            <h1 id="seo-header">使用 Docker 安装 MySQL8</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="docker-安装-mysql"><a href="#docker-安装-mysql" class="headerlink" title="docker 安装 mysql"></a>docker 安装 mysql</h1><p>可以在 docker hub搜索可用的 mysql 版本：<a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a></p>
+                <h1 id="使用-Docker-安装-MySQL8"><a href="#使用-Docker-安装-MySQL8" class="headerlink" title="使用 Docker 安装 MySQL8"></a>使用 Docker 安装 MySQL8</h1><p>可以在 docker hub搜索可用的 mysql 版本：<a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a></p>
 <p>假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name mysql8.1 \<br>-p 3306:3306 \<br>-e MYSQL_ROOT_PASSWORD=password \<br>-d mysql:8.1.0<br></code></pre></td></tr></table></figure>
+
 
 <p>参数解析：</p>
 <ul>
@@ -291,11 +293,11 @@
 </ul>
 <p>docker run命令的详细介绍可以使用<code>docker run --help</code>命令查看。</p>
 <p>如果镜像在本地不存在，会先从 docker hub拉取镜像到本地，然后基于镜像启动容器。</p>
-<p><img src="/assets/image-20230819230848131.png" srcset="/img/loading.gif" lazyload alt="image-20230819230848131"></p>
+<p><img src="/../images/image-20230819230848131.png" srcset="/img/loading.gif" lazyload alt="image-20230819230848131"></p>
 <p>然后就可以使用<code>docker images</code>查看拉取的镜像：</p>
-<p><img src="/assets/image-20230819212453893.png" srcset="/img/loading.gif" lazyload alt="image-20230819212453893"></p>
+<p><img src="/../images/image-20230819212453893.png" srcset="/img/loading.gif" lazyload alt="image-20230819212453893"></p>
 <p>使用<code>docker ps</code>查看已启动的容器：</p>
-<p><img src="/assets/image-20230819230806609.png" srcset="/img/loading.gif" lazyload alt="image-20230819230806609"></p>
+<p><img src="/../images/image-20230819230806609.png" srcset="/img/loading.gif" lazyload alt="image-20230819230806609"></p>
 <p>如果我们想要使用命令行连接到启动的mysql，一种方式是使用客户端（比如 navicat、datagrip）来连接，另一种方式是使用命令行来连接。首先进入到容器中：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it mysql8.1 bash<br></code></pre></td></tr></table></figure>
 
@@ -316,8 +318,9 @@
 <p>如果要永久删除镜像的话可以使用<code>docker rmi [image:tag | image-id]</code></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker rmi mysql:8.1.0<br></code></pre></td></tr></table></figure>
 
-<h3 id="使用自定义配置启动mysql"><a href="#使用自定义配置启动mysql" class="headerlink" title="使用自定义配置启动mysql"></a>使用自定义配置启动mysql</h3><p>MySQL的默认配置文件是<code>/etc/mysql/my.cnf</code>文件，如果想要自定义配置，可以参考：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html%E3%80%82%E5%BD%93%E7%84%B6%E5%8F%AF%E4%BB%A5%E5%9C%A8%E5%AE%B9%E5%99%A8%E5%90%AF%E5%8A%A8%E7%9A%84%E6%97%B6%E5%80%99%E6%8C%87%E5%AE%9A%E6%96%B0%E7%9A%84%60cnf%60%E6%96%87%E4%BB%B6%E6%9D%A5%E8%A6%86%E7%9B%96%E9%BB%98%E8%AE%A4%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E3%80%82">https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html。当然可以在容器启动的时候指定新的`cnf`文件来覆盖默认配置文件。</a></p>
-<p>在~&#x2F;env路径下创建配置文件<code>mysql.cnf</code>：</p>
+<h3 id="使用自定义配置启动mysql"><a href="#使用自定义配置启动mysql" class="headerlink" title="使用自定义配置启动mysql"></a>使用自定义配置启动mysql</h3><p>MySQL的默认配置文件是<code>/etc/mysql/my.cnf</code>文件，如果想要自定义配置，可以参考：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html%E3%80%82">https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html。</a></p>
+<p>当然可以在容器启动的时候指定新的<code>cnf</code>文件来覆盖默认配置文件。</p>
+<p>在<code>~/env</code>路径下创建配置文件<code>mysql.cnf</code>：</p>
 <figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># For advice on how to change settings please see</span><br><span class="hljs-comment"># http://dev.mysql.com/doc/refman/8.1/en/server-configuration-defaults.html</span><br><br><span class="hljs-attr">[mysqld]</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # and set to the amount of RAM for the most important data</span><br><span class="hljs-comment"># cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.</span><br><span class="hljs-comment"># innodb_buffer_pool_size = 128M</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # to turn on a very important data integrity option: logging</span><br><span class="hljs-comment"># changes to the binary log between backups.</span><br><span class="hljs-comment"># log_bin</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # to set options mainly useful for reporting servers.</span><br><span class="hljs-comment"># The server defaults are faster for transactions and fast SELECTs.</span><br><span class="hljs-comment"># Adjust sizes as needed, experiment to find the optimal values.</span><br><span class="hljs-comment"># join_buffer_size = 128M</span><br><span class="hljs-comment"># sort_buffer_size = 2M</span><br><span class="hljs-comment"># read_rnd_buffer_size = 2M</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># Remove leading # to revert to previous value for default_authentication_plugin,</span><br><span class="hljs-comment"># this will increase compatibility with older clients. For background, see:</span><br><span class="hljs-comment"># https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html#sysvar_default_authentication_plugin</span><br><span class="hljs-comment"># default-authentication-plugin=mysql_native_password</span><br><span class="hljs-attr">skip-host-cache</span><br><span class="hljs-attr">skip-name-resolve</span><br><span class="hljs-attr">datadir</span>=<span class="hljs-string">/var/lib/mysql</span><br><span class="hljs-attr">socket</span>=<span class="hljs-string">/var/run/mysqld/mysqld.sock</span><br><span class="hljs-attr">secure-file-priv</span>=<span class="hljs-string">/var/lib/mysql-files</span><br><span class="hljs-attr">user</span>=<span class="hljs-string">mysql</span><br><br><span class="hljs-attr">pid-file</span>=<span class="hljs-string">/var/run/mysqld/mysqld.pid</span><br><span class="hljs-attr">[client]</span><br><span class="hljs-attr">socket</span>=<span class="hljs-string">/var/run/mysqld/mysqld.sock</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">!includedir /etc/mysql/conf.d/</span><br></code></pre></td></tr></table></figure>
 
 <p>使用配置文件启动：</p>
@@ -353,7 +356,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/docker-mysql/" class="print-no-link">#docker, mysql</a>
+        <a href="/tags/Docker/" class="print-no-link">#Docker</a>
+      
+        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
       
     </div>
   
@@ -365,7 +370,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>使用docker安装MySQL8</div>
+      <div>使用 Docker 安装 MySQL8</div>
       <div>http://example.com/2023/09/23/使用docker安装MySQL8/</div>
     </div>
     <div class="license-meta">
@@ -413,12 +418,6 @@
                   </article>
                   <article class="post-next col-6">
                     
-                    
-                      <a href="/2023/09/22/test-my-site/" title="test_my_site">
-                        <span class="hidden-mobile">test_my_site</span>
-                        <span class="visible-mobile">下一篇</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
                     
                   </article>
                 </div>
