@@ -16,29 +16,26 @@
   <meta name="author" content="Yin Bai">
   <meta name="keywords" content="">
   
-    <meta name="description" content="使用 Docker 安装 MySQL8可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password">
+    <meta name="description" content="背景我们的项目中使用了 mariaDB 作为集成测试中使用的数据库，在本地运行测试的时候会在内存中启动一个 mariaDB 服务作为数据库来进行测试，最近在更新了homebrew之后发现在运行测试的时候报了下面的错误： 12345678910111213ch.vorburger.exec.ManagedProcessException: An error occurred while instal">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用 Docker 安装 MySQL8">
-<meta property="og:url" content="http://slsefe.github.io/2023/09/23/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85MySQL8/index.html">
+<meta property="og:title" content="openssl高版本导致mariaDB启动失败问题">
+<meta property="og:url" content="http://slsefe.github.io/2023/10/02/openssl%E9%AB%98%E7%89%88%E6%9C%AC%E5%AF%BC%E8%87%B4mariaDB%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/index.html">
 <meta property="og:site_name" content="程序员白总的博客">
-<meta property="og:description" content="使用 Docker 安装 MySQL8可以在 docker hub搜索可用的 mysql 版本：https:&#x2F;&#x2F;hub.docker.com&#x2F;_&#x2F;mysql 假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器： 1234docker run --name mysql8.1 \-p 3306:3306 \-e MYSQL_ROOT_PASSWORD&#x3D;password">
+<meta property="og:description" content="背景我们的项目中使用了 mariaDB 作为集成测试中使用的数据库，在本地运行测试的时候会在内存中启动一个 mariaDB 服务作为数据库来进行测试，最近在更新了homebrew之后发现在运行测试的时候报了下面的错误： 12345678910111213ch.vorburger.exec.ManagedProcessException: An error occurred while instal">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://slsefe.github.io/images/image-20230819230848131.png">
-<meta property="og:image" content="http://slsefe.github.io/images/image-20230819212453893.png">
-<meta property="og:image" content="http://slsefe.github.io/images/image-20230819230806609.png">
-<meta property="article:published_time" content="2023-09-23T06:04:08.000Z">
-<meta property="article:modified_time" content="2023-10-02T15:21:24.369Z">
+<meta property="article:published_time" content="2023-10-02T15:26:04.000Z">
+<meta property="article:modified_time" content="2023-10-02T15:36:56.813Z">
 <meta property="article:author" content="Yin Bai">
-<meta property="article:tag" content="Docker">
-<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="openssl">
+<meta property="article:tag" content="mariaDB">
+<meta property="article:tag" content="问题排查">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://slsefe.github.io/images/image-20230819230848131.png">
   
   
     <meta name="referrer" content="no-referrer-when-downgrade">
   
   
-  <title>使用 Docker 安装 MySQL8 - 程序员白总的博客</title>
+  <title>openssl高版本导致mariaDB启动失败问题 - 程序员白总的博客</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -231,7 +228,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="使用 Docker 安装 MySQL8"></span>
+            <span id="subtitle" data-typed-text="openssl高版本导致mariaDB启动失败问题"></span>
           
         </div>
 
@@ -242,8 +239,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-09-23 14:04" pubdate>
-          2023年9月23日 下午
+        <time datetime="2023-10-02 23:26" pubdate>
+          2023年10月2日 晚上
         </time>
       </span>
     
@@ -254,7 +251,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          3.3k 字
+          3k 字
         
       </span>
     
@@ -265,7 +262,7 @@
         
         
         
-          28 分钟
+          25 分钟
         
       </span>
     
@@ -302,77 +299,25 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">使用 Docker 安装 MySQL8</h1>
+            <h1 id="seo-header">openssl高版本导致mariaDB启动失败问题</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="使用-Docker-安装-MySQL8"><a href="#使用-Docker-安装-MySQL8" class="headerlink" title="使用 Docker 安装 MySQL8"></a>使用 Docker 安装 MySQL8</h1><p>可以在 docker hub搜索可用的 mysql 版本：<a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a></p>
-<p>假设我们选择8.1.0版本，就可以使用如下命令基于mysql:8.1.0来启动容器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name mysql8.1 \<br>-p 3306:3306 \<br>-e MYSQL_ROOT_PASSWORD=password \<br>-d mysql:8.1.0<br></code></pre></td></tr></table></figure>
+                <h3 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h3><p>我们的项目中使用了 mariaDB 作为集成测试中使用的数据库，在本地运行测试的时候会在内存中启动一个 mariaDB 服务作为数据库来进行测试，最近在更新了homebrew之后发现在运行测试的时候报了下面的错误：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs bash">ch.vorburger.exec.ManagedProcessException: An error occurred <span class="hljs-keyword">while</span> installing the database<br>  at ch.vorburger.mariadb4j.DB.install(DB.java:141)<br>	at ch.vorburger.mariadb4j.DB.newEmbeddedDB(DB.java:89)<br>...<br>Caused by: ch.vorburger.exec.ManagedProcessException: Program [/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base/bin/mysql_install_db, --datadir=/private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/data/3306, --tmpdir=/private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/tmp/3306, --basedir=/private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base, --no-defaults, --force, --skip-name-resolve] (<span class="hljs-keyword">in</span> working directory /var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base) failed, exitValue=1, last 100 lines of console:<br>dyld[28796]: Library not loaded: /usr/local/opt/openssl/lib/libssl.1.0.0.dylib<br>  Referenced from: &lt;807EF787-5964-392D-94E0-E301374CE806&gt; /private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base/bin/my_print_defaults<br>  Reason: tried: <span class="hljs-string">&#x27;/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/System/Volumes/Preboot/Cryptexes/OS/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/lib/libssl.1.0.0.dylib&#x27;</span> (no such file, not <span class="hljs-keyword">in</span> dyld cache)<br>Installing MariaDB/MySQL system tables <span class="hljs-keyword">in</span> <span class="hljs-string">&#x27;/private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/data/3306&#x27;</span> ...<br>dyld[28822]: Library not loaded: /usr/local/opt/openssl/lib/libssl.1.0.0.dylib<br>  Referenced from: &lt;46DF14A9-48CB-3FF1-83B5-0E8E9446546C&gt; /private/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base/bin/mysqld<br>  Reason: tried: <span class="hljs-string">&#x27;/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/System/Volumes/Preboot/Cryptexes/OS/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/opt/openssl/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/local/lib/libssl.1.0.0.dylib&#x27;</span> (no such file), <span class="hljs-string">&#x27;/usr/lib/libssl.1.0.0.dylib&#x27;</span> (no such file, not <span class="hljs-keyword">in</span> dyld cache)<br>/var/folders/gr/t26zps9n5rq76djs_2w9kdfc0000gn/T/MariaDB4j/base/bin/mysql_install_db: line 454: 28822 Abort <span class="hljs-built_in">trap</span>: 6           <span class="hljs-string">&quot;<span class="hljs-variable">$mysqld_bootstrap</span>&quot;</span> <span class="hljs-variable">$defaults</span> <span class="hljs-string">&quot;<span class="hljs-variable">$mysqld_opt</span>&quot;</span> --bootstrap <span class="hljs-variable">$silent_startup</span> <span class="hljs-string">&quot;--basedir=<span class="hljs-variable">$basedir</span>&quot;</span> <span class="hljs-string">&quot;--datadir=<span class="hljs-variable">$ldata</span>&quot;</span> --log-warnings=0 --enforce-storage-engine=<span class="hljs-string">&quot;&quot;</span> <span class="hljs-variable">$args</span> --max_allowed_packet=8M --net_buffer_length=16K<br></code></pre></td></tr></table></figure>
 
+<p>经过查看报错信息，可以分析得到找不到位于<code>/usr/local/opt/openssl/lib/libssl.1.0.0.dylib</code>路径的文件，再结合本地执行<code>which openssl</code>的结果可以推测，是在homebrew更新的时候自动升级了openssl的版本导致的报错。</p>
+<h3 id="修复方式"><a href="#修复方式" class="headerlink" title="修复方式"></a>修复方式</h3><p>第一步，下载低版本的openssl</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">brew install rbenv/tap/openssl@1.0<br></code></pre></td></tr></table></figure>
 
-<p>参数解析：</p>
-<ul>
-<li><code>--name mysql8.1</code>指定启动的容器名称，必须指定</li>
-<li><code>-p 3306:3306</code>将容器的 3306 端口暴露给主机的 3306 端口</li>
-<li><code>-e</code>用来指定环境变量 </li>
-<li><code>-d</code>表示在后台启动容器，并返回容器ID</li>
-<li><code>mysql:8.1.0</code>是我们指定的镜像</li>
-</ul>
-<p>docker run命令的详细介绍可以使用<code>docker run --help</code>命令查看。</p>
-<p>如果镜像在本地不存在，会先从 docker hub拉取镜像到本地，然后基于镜像启动容器。</p>
-<p><img src="/../images/image-20230819230848131.png" srcset="/img/loading.gif" lazyload alt="拉取镜像并运行"></p>
-<p>然后就可以使用<code>docker images</code>查看拉取的镜像：</p>
-<p><img src="/../images/image-20230819212453893.png" srcset="/img/loading.gif" lazyload alt="查看镜像"></p>
-<p>使用<code>docker ps</code>查看已启动的容器：</p>
-<p><img src="/../images/image-20230819230806609.png" srcset="/img/loading.gif" lazyload alt="查看已运行容器"></p>
-<p>如果我们想要使用命令行连接到启动的mysql，一种方式是使用客户端（比如 navicat、datagrip）来连接，另一种方式是使用命令行来连接。首先进入到容器中：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">exec</span> -it mysql8.1 bash<br></code></pre></td></tr></table></figure>
+<p>第二步，将第一步下载的低版本openssl和<code>/usr/local/opt/openssl</code>路径进行链接</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">ln</span> -sfn /usr/local/Cellar/openssl@1.0/1.0.2t /usr/local/opt/openssl<br></code></pre></td></tr></table></figure>
 
-<p>然后使用如下命令登录mysql：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">mysql -u root -p<br></code></pre></td></tr></table></figure>
+<p>第三步，验证openssl版本</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">which</span> openssl<br></code></pre></td></tr></table></figure>
 
-<p>然后根据提示输入密码即可。</p>
-<p>如果要退出 mysql 使用 <code>exit</code> 即可，退出容器的话也是<code>exit</code>。</p>
-<p>mysql 启动的时候使用-d参数指定了在后台启动，如果要看日志的话执行如下命令：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker logs mysql8.1<br></code></pre></td></tr></table></figure>
-
-<p>最后不再使用的时候可以使用<code>docker stop [container-id | container-name]</code>停止容器：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker stop mysql8.1<br></code></pre></td></tr></table></figure>
-
-<p>删除容器的话可以使用<code>docker rm [container-id | container-name]</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker <span class="hljs-built_in">rm</span> mysql8.1<br></code></pre></td></tr></table></figure>
-
-<p>如果要永久删除镜像的话可以使用<code>docker rmi [image:tag | image-id]</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker rmi mysql:8.1.0<br></code></pre></td></tr></table></figure>
-
-<h3 id="使用自定义配置启动mysql"><a href="#使用自定义配置启动mysql" class="headerlink" title="使用自定义配置启动mysql"></a>使用自定义配置启动mysql</h3><p>MySQL的默认配置文件是<code>/etc/mysql/my.cnf</code>文件，如果想要自定义配置，可以参考：<a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html%E3%80%82">https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html。</a></p>
-<p>当然可以在容器启动的时候指定新的<code>cnf</code>文件来覆盖默认配置文件。</p>
-<p>在<code>~/env</code>路径下创建配置文件<code>mysql.cnf</code>：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><code class="hljs properties"><span class="hljs-comment"># For advice on how to change settings please see</span><br><span class="hljs-comment"># http://dev.mysql.com/doc/refman/8.1/en/server-configuration-defaults.html</span><br><br><span class="hljs-attr">[mysqld]</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # and set to the amount of RAM for the most important data</span><br><span class="hljs-comment"># cache in MySQL. Start at 70% of total RAM for dedicated server, else 10%.</span><br><span class="hljs-comment"># innodb_buffer_pool_size = 128M</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # to turn on a very important data integrity option: logging</span><br><span class="hljs-comment"># changes to the binary log between backups.</span><br><span class="hljs-comment"># log_bin</span><br><span class="hljs-comment">#</span><br><span class="hljs-comment"># Remove leading # to set options mainly useful for reporting servers.</span><br><span class="hljs-comment"># The server defaults are faster for transactions and fast SELECTs.</span><br><span class="hljs-comment"># Adjust sizes as needed, experiment to find the optimal values.</span><br><span class="hljs-comment"># join_buffer_size = 128M</span><br><span class="hljs-comment"># sort_buffer_size = 2M</span><br><span class="hljs-comment"># read_rnd_buffer_size = 2M</span><br><span class="hljs-comment"></span><br><span class="hljs-comment"># Remove leading # to revert to previous value for default_authentication_plugin,</span><br><span class="hljs-comment"># this will increase compatibility with older clients. For background, see:</span><br><span class="hljs-comment"># https://dev.mysql.com/doc/refman/8.1/en/server-system-variables.html#sysvar_default_authentication_plugin</span><br><span class="hljs-comment"># default-authentication-plugin=mysql_native_password</span><br><span class="hljs-attr">skip-host-cache</span><br><span class="hljs-attr">skip-name-resolve</span><br><span class="hljs-attr">datadir</span>=<span class="hljs-string">/var/lib/mysql</span><br><span class="hljs-attr">socket</span>=<span class="hljs-string">/var/run/mysqld/mysqld.sock</span><br><span class="hljs-attr">secure-file-priv</span>=<span class="hljs-string">/var/lib/mysql-files</span><br><span class="hljs-attr">user</span>=<span class="hljs-string">mysql</span><br><br><span class="hljs-attr">pid-file</span>=<span class="hljs-string">/var/run/mysqld/mysqld.pid</span><br><span class="hljs-attr">[client]</span><br><span class="hljs-attr">socket</span>=<span class="hljs-string">/var/run/mysqld/mysqld.sock</span><br><span class="hljs-comment"></span><br><span class="hljs-comment">!includedir /etc/mysql/conf.d/</span><br></code></pre></td></tr></table></figure>
-
-<p>使用配置文件启动：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name mysql8.1 \<br>-p 3306:3306 \<br>-v ~/env:/etc/mysql/conf.d \<br>-e MYSQL_ROOT_PASSWORD=password \<br>-d mysql:8.1.0<br></code></pre></td></tr></table></figure>
-
-<p>其中<code>-v ~/env/mysql.cnf:/etc/mysql/conf.d/mysql.cnf</code>指定将主机的配置文件挂载到容器的<code>/etc/mysql/conf.d</code>路径下，这样容器启动的时候将会组合<code>/etc/mysql/my.cnf</code>和<code>/etc/mysql/conf.d/mysql.cnf</code>两个配置文件。</p>
-<p>如果只有少数几个配置项需要覆盖，也可以在启动容器的命令中以<code>--key=value</code>的形式指定，这样就不用使用cnf文件了：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name mysql8.1 \<br>-p 3306:3306 \<br>-e MYSQL_ROOT_PASSWORD=password \<br>-d mysql:8.1.0 \<br>--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci<br></code></pre></td></tr></table></figure>
-
-<h3 id="配置-mysql-的数据存储位置"><a href="#配置-mysql-的数据存储位置" class="headerlink" title="配置 mysql 的数据存储位置"></a>配置 mysql 的数据存储位置</h3><p>在 docker 中运行的 mysql 的数据存放在哪里呢？在容器中存放在<code>/var/lib/mysql</code>路径下，对应到主机上在什么路径下呢？</p>
-<p>默认情况下，Docker将数据库文件写入主机上的磁盘来管理数据库数据，这样带来的缺点是：在主机系统上运行的应用程序很难找到这些文件。</p>
-<p>我们可以在主机上创建一个数据目录，并将其挂载到容器内部的<code>/var/lib/mysql</code>路径。</p>
-<p>首先在主机上创建一个数据目录：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">cd</span> home<br><span class="hljs-built_in">mkdir</span> /mysql8/data<br></code></pre></td></tr></table></figure>
-
-<p>然后在容器启动的时候进行挂载：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs bash">docker run --name mysql8.1 \<br>-p 3306:3306 \<br>-v /home/mysql8/data:/var/lib/mysql \<br>-v /home/mysql8/config:/etc/mysql/conf.d  \<br>-v /home/mysql8/logs:/logs \<br>-e MYSQL_ROOT_PASSWORD=password \<br>-d mysql:8.1.0<br></code></pre></td></tr></table></figure>
-
-<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
-<li><a target="_blank" rel="noopener" href="https://hub.docker.com/_/mysql">https://hub.docker.com/_/mysql</a></li>
-<li><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/docker-install-mysql.html">https://www.runoob.com/docker/docker-install-mysql.html</a></li>
-<li><a target="_blank" rel="noopener" href="https://dev.mysql.com/doc/mysql-installer/en/">https://dev.mysql.com/doc/mysql-installer/en/</a></li>
-</ul>
+<p>如果看到使用的openssl已经指向了<code>/usr/local/opt/openssl@1.0/bin/openssl</code>，则说明已经切换成功。</p>
 
                 
               </div>
@@ -381,34 +326,15 @@
             <div>
               <div class="post-metas my-3">
   
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/Docker/" class="category-chain-item">Docker</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-    </div>
-  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Docker/" class="print-no-link">#Docker</a>
+        <a href="/tags/openssl/" class="print-no-link">#openssl</a>
       
-        <a href="/tags/MySQL/" class="print-no-link">#MySQL</a>
+        <a href="/tags/mariaDB/" class="print-no-link">#mariaDB</a>
+      
+        <a href="/tags/%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5/" class="print-no-link">#问题排查</a>
       
     </div>
   
@@ -420,8 +346,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>使用 Docker 安装 MySQL8</div>
-      <div>http://slsefe.github.io/2023/09/23/使用docker安装MySQL8/</div>
+      <div>openssl高版本导致mariaDB启动失败问题</div>
+      <div>http://slsefe.github.io/2023/10/02/openssl高版本导致mariaDB启动失败问题/</div>
     </div>
     <div class="license-meta">
       
@@ -433,7 +359,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年9月23日</div>
+          <div>2023年10月2日</div>
         </div>
       
       
@@ -465,9 +391,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/10/02/openssl%E9%AB%98%E7%89%88%E6%9C%AC%E5%AF%BC%E8%87%B4mariaDB%E5%90%AF%E5%8A%A8%E5%A4%B1%E8%B4%A5%E9%97%AE%E9%A2%98/" title="openssl高版本导致mariaDB启动失败问题">
+                      <a href="/2023/10/02/nodejs%E6%98%AF%E4%BB%80%E4%B9%88/" title="node.js是什么">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">openssl高版本导致mariaDB启动失败问题</span>
+                        <span class="hidden-mobile">node.js是什么</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -475,8 +401,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/09/23/%E4%BD%BF%E7%94%A8Github+Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" title="使用Github+Hexo搭建个人博客">
-                        <span class="hidden-mobile">使用Github+Hexo搭建个人博客</span>
+                      <a href="/2023/09/23/%E4%BD%BF%E7%94%A8docker%E5%AE%89%E8%A3%85MySQL8/" title="使用 Docker 安装 MySQL8">
+                        <span class="hidden-mobile">使用 Docker 安装 MySQL8</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
